@@ -1,5 +1,5 @@
 /*
- * Create a list that holds all of your cards
+ * 包含所有卡片的列表
  */
  const CARDS_LIB = [
    "fa fa-diamond",
@@ -45,7 +45,7 @@ let timer = 0;  //计时，初始为0
 */
 /**000
 *@description           从CARDS_LIB中随机弹出一个卡片
-*@return {string}  card 随机弹出的卡片
+*@return {string} card  随机弹出的卡片
 */
 function popOne(){
   var leng = Math.floor(Math.random()*CARDS_LIB.length);
@@ -58,13 +58,12 @@ function popOne(){
 *@description  initCard 游戏初始化设置 随机生成卡片
 */
 function initCard(){
-  //
+    setStar(3);
   //获取deck
   const deck = document.querySelector(".deck");
   //按序获取  随机设置card li class 属性
   for(let i=0;i<16; i++){
-    let j = 2*i+1;
-    deck.childNodes[j].childNodes[1].setAttribute("class",popOne());
+    deck.children[i].children[0].setAttribute("class",popOne());
   }
 }
 
@@ -75,7 +74,7 @@ function initCard(){
 function showCard(e){
   e.currentTarget.setAttribute("class","card open show");
   setMoves(++move);
-  if(move==16){
+  if(move==5){
     gameOver();
   }
 }
@@ -84,9 +83,22 @@ function showCard(e){
 *@description   setSrar 设置评分
 *@param {integer} num  评分参数 1--1颗星;2--2颗星;3--3颗星
 */
-function setSrar(num){
-  const moves = document.querySelector(".moves");
-  moves.textContent = num;
+function setStar(num){
+  var stars = document.querySelector(".stars");
+  if(num==1){
+      stars.children[0].children[0].setAttribute("class","fa fa-star");
+      stars.children[1].children[0].setAttribute("class","fa fa-star-o");
+      stars.children[2].children[0].setAttribute("class","fa fa-star-o");
+  }else if(num==2){
+      console.log(stars.children[0].children[0]);
+      stars.children[0].children[0].setAttribute("class","fa fa-star");
+      stars.children[1].children[0].setAttribute("class","fa fa-star");
+      stars.children[2].children[0].setAttribute("class","fa fa-star-o");
+  }else if(num==3){
+      stars.children[0].children[0].setAttribute("class","fa fa-star");
+      stars.children[1].children[0].setAttribute("class","fa fa-star");
+      stars.children[2].children[0].setAttribute("class","fa fa-star");
+  }
 }
 
 /**004
@@ -123,6 +135,7 @@ function stopWatch(){
 */
 function gameOver(){
   timer();
+  setStar(2);
 }
 
 /**
