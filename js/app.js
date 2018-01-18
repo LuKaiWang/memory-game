@@ -23,29 +23,7 @@ let finalStar = 3;  //游戏结束时,星星等级
 let move = 0;  //计步，初始为0
 let timer = 0;  //计时，初始为0
 let match = 0;  //记录匹配对数 ，等于8时全部匹配成功，游戏结束
-let preCard = ""; //记录前一个卡片，便于匹配
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-//var array=[];
-// Shuffle function from http://stackoverflow.com/a/2450976
-/**function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-    return array;
-}
-*/
+let openList = []; //存储翻开未匹配card
 
 /**
 *@description  Jquery库----程序入口
