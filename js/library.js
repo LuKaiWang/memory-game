@@ -23,15 +23,49 @@ function initCard(){
 }
 
 /**02
-*@description  showCard 鼠标点击事件 ，点击后显示卡片内容
+*@description  clickCard 鼠标点击事件 ，点击后显示卡片内容
 *@param {object} e
 */
-function showCard(e){
-  e.currentTarget.setAttribute("class","card open show");
-  setMoves(++move);
-  if(move==16){
-    gameOver();
+function clickCard(e){
+  if(preCard==undefined){    //翻开一张卡片
+    preCard = e.currentTarget;  //记忆一张卡片
+    e.currentTarget.setAttribute("class","card open show");  //显示点击卡片内容
+  }else{  //翻开第二张卡片，看是否匹配
+    nowCard = e.currentTarget;
+    if(preCard.children[0].getAttribute("class")==nowCard.children[0].getAttribute("class")){ //卡片匹配
+       preCard.setAttribute("class","card match");
+       nowCard.setAttribute("class","card match");
+       //Todo:移除该卡片点击监听事件
+       setTimeout(matchEvent,100);
+       match++;
+    }
+    else { //不匹配
+      preCard.setAttribute("class","card fail show");
+      nowCard.setAttribute("class","card fail show");
+      setTimeout(noMatch,500);
+    }
   }
+  setMoves(++move);
+  if(move==1){
+    startTime = Date.now();
+  }
+  if(match==8){
+    setTimeout(gameOver,500);
+  }
+}
+
+function matchEvent(){
+  preCard.removeEventListener('click',clickCard,false);
+  nowCard.removeEventListener('click',clickCard,false);
+  preCard=undefined;
+  nowCard=undefined;
+}
+
+function noMatch(){
+  preCard.setAttribute("class","card");
+  nowCard.setAttribute("class","card");
+  preCard = undefined;
+  nowCard = undefined;
 }
 
 /**03
@@ -52,23 +86,23 @@ function restartGame(){
 /**05
 *@description stopWatch  计时
 */
-function stopWatch(){
-  let startTime = Date.now();
+//function stopWatch(){
+//  let startTime = Date.now();
 
-  function getDelay(){
-    let elaspedTime = Date.now() - startTime;
-    alert("您用时"+elaspedTime/1000+"秒！");
-  }
-
-  return getDelay;
-}
+//  function getDelay(){
+//    let elaspedTime = Date.now() - startTime;
+//    result = window.confirm("您用时"+elaspedTime/1000+"秒！");
+//  }
+//  return getDelay;
+//}
 
 /**06
 *@description gameOver 结束游戏
 */
 function gameOver(){
-  timer();
   setStar(2);
+  let useTime = Date.now() - startTime ;
+  let result = window.confirm("您用时"+(useTime/1000-0.5)+"秒！");
 }
 /**07
 *@description   setSrar 设置评分
