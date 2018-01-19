@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Memory Game Project
 
 ## Table of Contents
@@ -18,3 +19,6 @@ For specific, detailed instructions, look at the project instructions in the [Ud
 This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+=======
+# memory-game
+>>>>>>> d54c2131ff4e0dd71b47ad745a70725df83f0a1e
