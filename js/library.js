@@ -13,12 +13,10 @@ function popOne(){
 *@description  initCard 游戏初始化设置 随机生成卡片
 */
 function initCard(){
-    setStar(3);
-  //获取deck
-  const deck = document.querySelector(".deck");
-  //按序获取  随机设置card li class 属性
-  for(let i=0;i<16; i++){
-    deck.children[i].children[0].setAttribute("class",popOne());
+  setStar(6);  //初始设置3星
+  const deck = document.querySelector(".deck");   //获取deck元素
+  for(let i=0;i<16; i++){           //按序获取  随机设置card li class 属性
+    deck.children[i].children[0].setAttribute("class",popOne());   //随机设置卡片图标
   }
 }
 
@@ -35,76 +33,81 @@ function clickCard(e){
     if(preCard.children[0].getAttribute("class")==nowCard.children[0].getAttribute("class")){ //卡片匹配
        preCard.setAttribute("class","card match");
        nowCard.setAttribute("class","card match");
-       //Todo:移除该卡片点击监听事件
-       setTimeout(matchEvent,100);
+       setTimeout(matchEvent,100);//移除该卡片点击监听事件
        match++;
     }
-    else { //不匹配
+    else { //不匹配，先设置红色背景（fail属性），再恢复原状态
       preCard.setAttribute("class","card fail show");
       nowCard.setAttribute("class","card fail show");
-      setTimeout(noMatch,500);
+      setTimeout(noMatchEvent,200);
     }
   }
-  setMoves(++move);
-  if(move==1){
+  setMoves(++move);  //记步
+  if(move==1){ //第一次点击时记录游戏开始时间
     startTime = Date.now();
   }
-  if(match==8){
-    setTimeout(gameOver,500);
+  if(match==8){  //如果8对卡片全部匹配，则游戏结束！
+    setTimeout(showResult,500);
   }
-}
-
-function matchEvent(){
-  preCard.removeEventListener('click',clickCard,false);
-  nowCard.removeEventListener('click',clickCard,false);
-  preCard=undefined;
-  nowCard=undefined;
-}
-
-function noMatch(){
-  preCard.setAttribute("class","card");
-  nowCard.setAttribute("class","card");
-  preCard = undefined;
-  nowCard = undefined;
 }
 
 /**03
-*@description  setMoves 计步
+*@description  matchEvent  卡片匹配回调函数
 */
-function setMoves(num){
-  const moves = document.querySelector(".moves");
-  moves.textContent= num;
+function matchEvent(){
+  preCard.removeEventListener('click',clickCard,false);  //移除卡片点击事件
+  nowCard.removeEventListener('click',clickCard,false);
+  preCard=undefined;   //重设preCard，nowCard
+  nowCard=undefined;
 }
 
 /**04
+*@description  noMatchEvent  卡片不匹配回调函数
+*/
+function noMatchEvent(){
+  preCard.setAttribute("class","card");  //恢复卡片初始状态
+  nowCard.setAttribute("class","card");
+  preCard = undefined;    //重设preCard，nowCard
+  nowCard = undefined;
+}
+
+/**05
+*@description  setMoves 计步
+*/
+function setMoves(move){
+  const moves = document.querySelector(".moves");
+  moves.textContent= move;
+  if(move>20&&move<=25){ //设置星级评分
+    setStar(5);
+  }else if(move>25&&move<=30){
+    setStar(4);
+  }else if(move>30&&move<=35){
+    setStar(3);
+  }else if(move>35&&move<=40){
+    setStar(2);
+  }else if(move>40&&move<=45){
+    setStar(1);
+  }else if(move>45){
+    setStar(0);
+  }
+}
+
+/**06
 *@description restartGame 重设游戏
 */
 function restartGame(){
   location.reload();
 }
 
-/**05
-*@description stopWatch  计时
+/**07
+*@description showResult 显示游戏结果
 */
-//function stopWatch(){
-//  let startTime = Date.now();
-
-//  function getDelay(){
-//    let elaspedTime = Date.now() - startTime;
-//    result = window.confirm("您用时"+elaspedTime/1000+"秒！");
-//  }
-//  return getDelay;
-//}
-
-/**06
-*@description gameOver 结束游戏
-*/
-function gameOver(){
-  setStar(2);
+function showResult(){
   let useTime = Date.now() - startTime ;
   let result = window.confirm("您用时"+(useTime/1000-0.5)+"秒！");
 }
-/**07
+
+/**08
 *@description   setSrar 设置评分
 *@param {integer} num  评分参数 0--0颗星，1--0.5颗星;2--1颗星;3--1.5颗星;4--2颗星;5--2.5颗星;6--3颗星
 */
