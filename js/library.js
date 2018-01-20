@@ -30,17 +30,21 @@ function clickCard(e) {
     e.currentTarget.setAttribute("class", "card open show"); //显示点击卡片内容
   } else { //翻开第二张卡片，看是否匹配
     nowCard = e.currentTarget;
-    if (preCard.children[0].getAttribute("class") == nowCard.children[0].getAttribute("class")) { //卡片匹配
-      preCard.setAttribute("class", "card match");
-      nowCard.setAttribute("class", "card match");
-      setTimeout(matchEvent, 100); //移除该卡片点击监听事件
-      setMoves(++move); //记步
-      match++;
-    } else { //不匹配，先设置红色背景（fail属性），再恢复原状态
-      preCard.setAttribute("class", "card fail show");
-      nowCard.setAttribute("class", "card fail show");
-      setMoves(++move); //记步
-      setTimeout(noMatchEvent, 200);
+    if (preCard === nowCard) { //如果点击是同一Card，则忽略该操作，并重设nowCard
+      nowCard = undefined;
+    } else {
+      if (preCard.children[0].getAttribute("class") == nowCard.children[0].getAttribute("class")) { //卡片匹配
+        preCard.setAttribute("class", "card match");
+        nowCard.setAttribute("class", "card match");
+        setTimeout(matchEvent, 100); //移除该卡片点击监听事件
+        setMoves(++move); //记步
+        match++;
+      } else { //不匹配，先设置红色背景（fail属性），再恢复原状态
+        preCard.setAttribute("class", "card fail show");
+        nowCard.setAttribute("class", "card fail show");
+        setMoves(++move); //记步
+        setTimeout(noMatchEvent, 200);
+      }
     }
   }
   if (move == 1) { //第一次点击时记录游戏开始时间
