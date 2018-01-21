@@ -25,6 +25,10 @@ function initCard() {
  *@param {object} e
  */
 function clickCard(e) {
+  if (!startGame) { //第一次点击时记录游戏开始时间
+    timedCount(); //计时
+    startGame = true; //游戏开始
+  }
   if (preCard == undefined) { //翻开一张卡片
     preCard = e.currentTarget; //记忆一张卡片
     e.currentTarget.setAttribute("class", "card open show"); //显示点击卡片内容
@@ -47,11 +51,9 @@ function clickCard(e) {
       }
     }
   }
-  if (move == 1) { //第一次点击时记录游戏开始时间
-    startTime = Date.now();
-  }
   if (match == 8) { //如果8对卡片全部匹配，则游戏结束！
-    setTimeout(showResult, 500);
+    //setTimeout(showResult, 500);
+    showResult();
   }
 }
 
@@ -107,11 +109,28 @@ function restartGame() {
  *@description showResult 显示游戏结果
  */
 function showResult() {
-  let useTime = Date.now() - startTime;
-  let result = window.confirm("您用时" + (useTime / 1000 - 0.5) + "秒！");
+  stopCount(); //停止计时
+  const modal = document.querySelector(".modal"); //获取模态框
+  const resultCon = document.querySelector(".resultContent"); //获取游戏结果显示模块
+  const oneMoreGame = document.querySelector(".oneMoreButton"); //获取再来一局按钮
+  const gameOverButton = document.querySelector(".gameOverButton"); //获取游戏结束按钮
+  resultCon.textContent = "恭喜您胜利了!\n您用时" + useTime + "秒！\n获得" + finalStar + "颗星！"; //设置游戏结果显示内容
+  oneMoreGame.addEventListener('click', restartGame, false); //为再来一局按钮添加click事件
+  gameOverButton.addEventListener('click', toggleModal, false); //设置模态框游戏结束按钮监听事件
+  toggleModal(); //游戏结束显示模态框
+
+  //let result = window.confirm("您用时" + (useTime / 1000 - 0.5) + "秒！");
 }
 
 /**08
+ *@description toggleModal 切换Modal的可见状态，引用自how-to-create-modal-popup-box，网址为https://sabe.io/tutorials/how-to-create-modal-popup-box
+ */
+function toggleModal() {
+  var modal = document.querySelector(".modal");
+  modal.classList.toggle("show-modal");
+}
+
+/**09
  *@description   setSrar 设置评分
  *@param {integer} num  评分参数 0--0颗星，1--0.5颗星;2--1颗星;3--1.5颗星;4--2颗星;5--2.5颗星;6--3颗星
  */
@@ -122,38 +141,61 @@ function setStar(num) {
       stars.children[0].children[0].setAttribute("class", "fa fa-star-o");
       stars.children[1].children[0].setAttribute("class", "fa fa-star-o");
       stars.children[2].children[0].setAttribute("class", "fa fa-star-o");
+      finalStar = 0;
       break;
     case 1:
       stars.children[0].children[0].setAttribute("class", "fa fa-star-half-o");
       stars.children[1].children[0].setAttribute("class", "fa fa-star-o");
       stars.children[2].children[0].setAttribute("class", "fa fa-star-o");
+      finalStar = 0.5;
       break;
     case 2:
       stars.children[0].children[0].setAttribute("class", "fa fa-star");
       stars.children[1].children[0].setAttribute("class", "fa fa-star-o");
       stars.children[2].children[0].setAttribute("class", "fa fa-star-o");
+      finalStar = 1;
       break;
     case 3:
       stars.children[0].children[0].setAttribute("class", "fa fa-star");
       stars.children[1].children[0].setAttribute("class", "fa fa-star-half-o");
       stars.children[2].children[0].setAttribute("class", "fa fa-star-o");
+      finalStar = 1.5;
       break;
     case 4:
       stars.children[0].children[0].setAttribute("class", "fa fa-star");
       stars.children[1].children[0].setAttribute("class", "fa fa-star");
       stars.children[2].children[0].setAttribute("class", "fa fa-star-o");
+      finalStar = 2;
       break;
     case 5:
       stars.children[0].children[0].setAttribute("class", "fa fa-star");
       stars.children[1].children[0].setAttribute("class", "fa fa-star");
       stars.children[2].children[0].setAttribute("class", "fa fa-star-half-o");
+      finalStar = 2.5;
       break;
     case 6:
       stars.children[0].children[0].setAttribute("class", "fa fa-star");
       stars.children[1].children[0].setAttribute("class", "fa fa-star");
       stars.children[2].children[0].setAttribute("class", "fa fa-star");
+      finalStar = 3;
       break;
     default:
       break;
   }
+}
+
+/**10
+ *@description timedCount 计时函数，引用自http://www.w3school.com.cn/tiy/t.asp?f=jseg_timing_stop
+ */
+function timedCount() {
+  document.querySelector('.timer').textContent = useTime;
+  useTime++;
+  timeC = setTimeout("timedCount()", 1000);
+}
+
+/**10
+ *@description stopCount 停止计时函数，引用自http://www.w3school.com.cn/tiy/t.asp?f=jseg_timing_stop
+ */
+function stopCount() {
+  clearTimeout(timeC);
 }

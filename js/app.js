@@ -19,8 +19,10 @@
    "fa fa-bicycle",
    "fa fa-bomb"
  ];
+ let startGame = false; //标志游戏开始
  let finalStar = 3; //游戏结束时,星星等级
- let startTime = 0; //记录游戏开始时间
+ let useTime = 0; //记录游戏时间
+ let timeC; //计时
  let move = 0; //计步，初始为0
  let match = 0; //记录匹配对数 ，等于8时全部匹配成功，游戏结束
  let preCard = undefined; //存储翻开未匹配card
