@@ -114,7 +114,7 @@ function showResult() {
   const resultCon = document.querySelector(".resultContent"); //获取游戏结果显示模块
   const oneMoreGame = document.querySelector(".oneMoreButton"); //获取再来一局按钮
   const gameOverButton = document.querySelector(".gameOverButton"); //获取游戏结束按钮
-  resultCon.textContent = "恭喜您胜利了!\n您用时" + useTime + "秒！\n获得" + finalStar + "颗星！"; //设置游戏结果显示内容
+  resultCon.textContent = `恭喜您胜利了!\n您用时${useTime} 秒！获得${finalStar}颗星`; //设置游戏结果显示内容
   oneMoreGame.addEventListener('click', restartGame, false); //为再来一局按钮添加click事件
   gameOverButton.addEventListener('click', toggleModal, false); //设置模态框游戏结束按钮监听事件
   toggleModal(); //游戏结束显示模态框
