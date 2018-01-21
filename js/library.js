@@ -31,23 +31,23 @@ function clickCard(e) {
   }
   if (preCard == undefined) { //翻开一张卡片
     preCard = e.currentTarget; //记忆一张卡片
-    e.currentTarget.setAttribute("class", "card open show"); //显示点击卡片内容
+    e.currentTarget.setAttribute("class", "card open show animated flipInY"); //显示点击卡片内容
   } else { //翻开第二张卡片，看是否匹配
     nowCard = e.currentTarget;
     if (preCard === nowCard) { //如果点击是同一Card，则忽略该操作，并重设nowCard
       nowCard = undefined;
     } else {
       if (preCard.children[0].getAttribute("class") == nowCard.children[0].getAttribute("class")) { //卡片匹配
-        preCard.setAttribute("class", "card match");
-        nowCard.setAttribute("class", "card match");
-        setTimeout(matchEvent, 100); //移除该卡片点击监听事件
+        preCard.setAttribute("class", "card match animated rubberBand");
+        nowCard.setAttribute("class", "card match animated rubberBand");
+        setTimeout(matchEvent, 300); //移除该卡片点击监听事件
         setMoves(++move); //记步
         match++;
       } else { //不匹配，先设置红色背景（fail属性），再恢复原状态
-        preCard.setAttribute("class", "card fail show");
-        nowCard.setAttribute("class", "card fail show");
+        preCard.setAttribute("class", "card fail show animated shake");
+        nowCard.setAttribute("class", "card fail show animated shake");
         setMoves(++move); //记步
-        setTimeout(noMatchEvent, 200);
+        setTimeout(noMatchEvent, 500);
       }
     }
   }
@@ -118,8 +118,6 @@ function showResult() {
   oneMoreGame.addEventListener('click', restartGame, false); //为再来一局按钮添加click事件
   gameOverButton.addEventListener('click', toggleModal, false); //设置模态框游戏结束按钮监听事件
   toggleModal(); //游戏结束显示模态框
-
-  //let result = window.confirm("您用时" + (useTime / 1000 - 0.5) + "秒！");
 }
 
 /**08
@@ -193,7 +191,7 @@ function timedCount() {
   timeC = setTimeout("timedCount()", 1000);
 }
 
-/**10
+/**11
  *@description stopCount 停止计时函数，引用自http://www.w3school.com.cn/tiy/t.asp?f=jseg_timing_stop
  */
 function stopCount() {

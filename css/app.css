@@ -24,6 +24,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 2;
 }
 
 h1 {
@@ -147,6 +148,7 @@ h1 {
   visibility: hidden;
   transform: scaleX(1.1) scaleY(1.1);
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+  z-index: 3;
 }
 
 .modal-content {

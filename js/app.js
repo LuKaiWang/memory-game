@@ -40,6 +40,6 @@
      a.addEventListener('click', clickCard, false);
    }
    //为重置按钮添加click事件
-   const Restart = document.querySelector(".restart");
+   const Restart = document.querySelector(".fa-repeat");
    Restart.addEventListener('click', restartGame, false);
  })
