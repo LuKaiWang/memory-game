@@ -27,6 +27,7 @@
  let match = 0; //记录匹配对数 ，等于8时全部匹配成功，游戏结束
  let preCard = undefined; //存储翻开未匹配card
  let nowCard = undefined; //存储第二张匹配卡片
+ let isMatching = false; //记录但前是否正在匹配第二张卡片过程中，初始为false
 
  /**
   *@description  Jquery库----程序入口

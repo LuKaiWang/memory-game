@@ -25,35 +25,38 @@ function initCard() {
  *@param {object} e
  */
 function clickCard(e) {
-  if (!startGame) { //第一次点击时记录游戏开始时间
-    timedCount(); //计时
-    startGame = true; //游戏开始
-  }
-  if (preCard == undefined) { //翻开一张卡片
-    preCard = e.currentTarget; //记忆一张卡片
-    e.currentTarget.setAttribute("class", "card open show animated flipInY"); //显示点击卡片内容
-  } else { //翻开第二张卡片，看是否匹配
-    nowCard = e.currentTarget;
-    if (preCard === nowCard) { //如果点击是同一Card，则忽略该操作，并重设nowCard
-      nowCard = undefined;
-    } else {
-      if (preCard.children[0].getAttribute("class") == nowCard.children[0].getAttribute("class")) { //卡片匹配
-        preCard.setAttribute("class", "card match animated rubberBand");
-        nowCard.setAttribute("class", "card match animated rubberBand");
-        setTimeout(matchEvent, 300); //移除该卡片点击监听事件
-        setMoves(++move); //记步
-        match++;
-      } else { //不匹配，先设置红色背景（fail属性），再恢复原状态
-        preCard.setAttribute("class", "card fail show animated shake");
-        nowCard.setAttribute("class", "card fail show animated shake");
-        setMoves(++move); //记步
-        setTimeout(noMatchEvent, 500);
+  if (!isMatching) { //目前不在匹配第二张卡片过程中，则点击事件生效，否则，点击无效
+    if (!startGame) { //第一次点击时记录游戏开始时间
+      timedCount(); //计时
+      startGame = true; //游戏开始
+    }
+    if (preCard == undefined) { //翻开一张卡片
+      preCard = e.currentTarget; //记忆一张卡片
+      e.currentTarget.setAttribute("class", "card open show animated flipInY"); //显示点击卡片内容
+    } else { //翻开第二张卡片，看是否匹配
+      nowCard = e.currentTarget;
+      if (preCard === nowCard) { //如果点击是同一Card，则忽略该操作，并重设nowCard
+        nowCard = undefined;
+      } else {
+        isMatching = true; //开始匹配第二张卡片
+        if (preCard.children[0].getAttribute("class") == nowCard.children[0].getAttribute("class")) { //卡片匹配
+          preCard.setAttribute("class", "card match animated rubberBand");
+          nowCard.setAttribute("class", "card match animated rubberBand");
+          setMoves(++move); //记步
+          match++;
+          setTimeout(matchEvent, 300); //移除该卡片点击监听事件
+        } else { //不匹配，先设置红色背景（fail属性），再恢复原状态
+          preCard.setAttribute("class", "card fail show animated shake");
+          nowCard.setAttribute("class", "card fail show animated shake");
+          setMoves(++move); //记步
+          setTimeout(noMatchEvent, 500);
+        }
       }
     }
-  }
-  if (match == 8) { //如果8对卡片全部匹配，则游戏结束！
-    setTimeout(showResult, 500);
-    //showResult();
+    if (match == 8) { //如果8对卡片全部匹配，则游戏结束！
+      setTimeout(showResult, 500);
+      //showResult();
+    }
   }
 }
 
@@ -65,6 +68,7 @@ function matchEvent() {
   nowCard.removeEventListener('click', clickCard, false);
   preCard = undefined; //重设preCard，nowCard
   nowCard = undefined;
+  isMatching = false; //匹配第二张卡片过程结束
 }
 
 /**04
@@ -75,6 +79,7 @@ function noMatchEvent() {
   nowCard.setAttribute("class", "card");
   preCard = undefined; //重设preCard，nowCard
   nowCard = undefined;
+  isMatching = false; //匹配第二张卡片过程结束
 }
 
 /**05
@@ -114,7 +119,7 @@ function showResult() {
   const resultCon = document.querySelector(".resultContent"); //获取游戏结果显示模块
   const oneMoreGame = document.querySelector(".oneMoreButton"); //获取再来一局按钮
   const gameOverButton = document.querySelector(".gameOverButton"); //获取游戏结束按钮
-  resultCon.textContent = `恭喜您胜利了!您用时${useTime} 秒,用了${move}步!获得${finalStar}颗星`; //设置游戏结果显示内容
+  resultCon.innerHTML = `恭喜您胜利了!<br />您用时${useTime} 秒！<br />移动了${move}步!<br />获得${finalStar}颗星!`; //设置游戏结果显示内容
   oneMoreGame.addEventListener('click', restartGame, false); //为再来一局按钮添加click事件
   gameOverButton.addEventListener('click', toggleModal, false); //设置模态框游戏结束按钮监听事件
   toggleModal(); //游戏结束显示模态框
