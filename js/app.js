@@ -42,4 +42,4 @@
    //为重置按钮添加click事件
    const Restart = document.querySelector(".fa-repeat");
    Restart.addEventListener('click', restartGame, false);
- })
+ });
